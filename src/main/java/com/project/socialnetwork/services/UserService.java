@@ -5,12 +5,14 @@ import com.project.socialnetwork.models.Role;
 import com.project.socialnetwork.models.User;
 import com.project.socialnetwork.repositories.RoleRepository;
 import com.project.socialnetwork.repositories.UserRepository;
+import com.project.socialnetwork.services.picture_save_services.UserAvatarsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -23,6 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserAvatarsService avatarsOperations;
     @Value("${defaultRole}")
     private String defaultRole;
 
@@ -41,10 +44,14 @@ public class UserService {
         user.setRoles(userRoles);
     }
 
+    public void setNewAvatar(User user,MultipartFile avatar){
+        avatarsOperations.setUserAvatar(user,avatar);
+    }
+
+
     public boolean isUsernameUnique(String username){
         return userRepository.findByUsername(username) == null;
     }
-
 
     public void updateUser(User user){
         userRepository.save(user);
