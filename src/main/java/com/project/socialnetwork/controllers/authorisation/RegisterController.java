@@ -23,16 +23,15 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String registerPost(Model model,@Valid User user, BindingResult bindingResult){
+    public String registerPost(@Valid User user, BindingResult bindingResult){
         if(!bindingResult.hasErrors()){
            if(userService.isUsernameUnique(user.getUsername())){
                userService.saveNewUser(user);
                return "redirect:/login";
            } else{
-               bindingResult.rejectValue("username","username is already taken");
+               bindingResult.rejectValue("username","user.error","username is already taken");
            }
         }
-        model.addAttribute("user",user);
         return "/authorisation/register";
     }
 }
