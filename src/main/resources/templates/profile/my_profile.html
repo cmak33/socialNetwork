@@ -6,7 +6,7 @@
 </head>
 <body>
 <div th:if="${error}" th:text="${error}"></div>
-<form method="POST" th:action="@{/profiles/my_profile/refactor}" th:object="${pageOwner}" enctype="multipart/form-data">
+<form method="POST" th:action="@{/profiles/my_profile/}" th:object="${pageOwner}" enctype="multipart/form-data">
     <label for="username">name :</label>
     <input id="username" type="text" th:field="*{username}">
     <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
