@@ -21,6 +21,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @PropertySource("classpath:/properties/user.properties")
+@PropertySource("classpath:properties/imagesPaths.properties")
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -28,10 +29,15 @@ public class UserService {
     private final UserAvatarsService avatarsOperations;
     @Value("${defaultRole}")
     private String defaultRole;
+    @Value("${defaultAvatarName}")
+    private String defaultAvatarName;
 
     public void saveNewUser(User user){
         encodeUserPassword(user);
         addDefaultRoleToUser(user);
+        if(user.getAvatarName()==null){
+            user.setAvatarName(defaultAvatarName);
+        }
         userRepository.save(user);
     }
     private void encodeUserPassword(User user){
@@ -48,6 +54,10 @@ public class UserService {
         avatarsOperations.setUserAvatar(user,avatar);
     }
 
+
+    public boolean isNewUsernameAppropriate(String username){
+        return isUsernameUnique(username) || receiveCurrentUser().getUsername().equals(username);
+    }
 
     public boolean isUsernameUnique(String username){
         return userRepository.findByUsername(username) == null;

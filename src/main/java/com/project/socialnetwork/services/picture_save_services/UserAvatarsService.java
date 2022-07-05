@@ -25,8 +25,10 @@ public class UserAvatarsService extends PictureSaveService<FilePathArguments,Ava
         FilePathArguments arguments = createFilePathArguments(user,avatar);
         Optional<String> avatarName = savePicture(avatar,arguments);
         avatarName.ifPresent(value->{
-            deleteAvatarIfNotDefault(user.getAvatarName());
-            user.setAvatarName(value);
+            if(!value.equals(user.getAvatarName())) {
+                deleteAvatarIfNotDefault(user.getAvatarName());
+                user.setAvatarName(value);
+            }
         });
     }
 

@@ -4,6 +4,7 @@ import com.project.socialnetwork.models.Post;
 import com.project.socialnetwork.repositories.PostRepository;
 import com.project.socialnetwork.services.picture_save_services.PostPictureService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public record PostService(PostRepository postRepository, PostPictureService postPictureOperations) {
+
 
     public void savePost(Post post) {
         post.convertImagesNamesListToJson();

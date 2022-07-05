@@ -49,13 +49,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/profile/my_profile")
+                .antMatchers("/profiles/my_profile")
                 .authenticated()
                 .antMatchers("/", "/**").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/profile/my_profile",true)
+                .defaultSuccessUrl("/profiles/my_profile",true)
                 .failureUrl("/login-error")
                 .and()
                 .logout()

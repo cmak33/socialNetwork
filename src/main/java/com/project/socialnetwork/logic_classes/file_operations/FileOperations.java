@@ -1,6 +1,7 @@
 package com.project.socialnetwork.logic_classes.file_operations;
 
 import lombok.extern.java.Log;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -37,5 +38,9 @@ public class FileOperations {
         }catch(IOException exception){
             log.log(Level.WARNING,"could not delete file",exception);
         }
+    }
+
+    public static String getFileExtension(String originalName){
+        return FilenameUtils.getExtension(originalName);
     }
 }
