@@ -1,11 +1,9 @@
 package com.project.socialnetwork.logic_classes.file_operations.file_creation_args;
 
-import java.io.File;
-
-public class PostPicturePathArguments extends FilePathArguments {
+public class RecordPicturePathArguments extends FilePathArguments {
     private final int pictureIndex;
 
-    public PostPicturePathArguments(Long id, String fileExtension,int pictureIndex) {
+    public RecordPicturePathArguments(Long id, String fileExtension, int pictureIndex) {
         super(id, fileExtension);
         this.pictureIndex = pictureIndex;
     }

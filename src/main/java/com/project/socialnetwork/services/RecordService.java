@@ -1,10 +1,8 @@
 package com.project.socialnetwork.services;
 
 import com.project.socialnetwork.models.Post;
-import com.project.socialnetwork.repositories.PostRepository;
-import com.project.socialnetwork.services.picture_save_services.PostPictureService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.project.socialnetwork.repositories.RecordRepository;
+import com.project.socialnetwork.services.picture_save_services.RecordPictureService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,32 +10,32 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public record PostService(PostRepository postRepository, PostPictureService postPictureOperations) {
+public record RecordService(RecordRepository recordRepository, RecordPictureService recordPictureOperations) {
 
 
     public void savePost(Post post) {
         post.convertImagesNamesListToJson();
-        postRepository.save(post);
+        recordRepository.save(post);
     }
 
     public void deletePost(Post post){
-        postRepository.delete(post);
-        postPictureOperations.deletePostPictures(post);
+        recordRepository.delete(post);
+        recordPictureOperations.deletePostPictures(post);
     }
 
     public Optional<Post> findById(Long id) {
-        Optional<Post> post = postRepository.findById(id);
+        Optional<Post> post = recordRepository.findById(id);
         post.ifPresent(Post::convertJsonToImagesNamesList);
         return post;
     }
 
     public void deleteImage(String imageName, Post post) {
         post.getImagesNames().remove(imageName);
-        postPictureOperations.deletePicture(imageName);
+        recordPictureOperations.deletePicture(imageName);
     }
 
     public void addPictures(Post post, List<MultipartFile> pictures){
-        List<String> pictureNames = postPictureOperations.savePostPictures(post,pictures);
+        List<String> pictureNames = recordPictureOperations.savePostPictures(post,pictures);
         post.setImagesNames(pictureNames);
     }
 

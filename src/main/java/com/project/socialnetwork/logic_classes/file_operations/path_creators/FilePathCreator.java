@@ -19,9 +19,9 @@ public abstract class FilePathCreator<T extends FilePathArguments> {
     protected abstract  MessageFormat createMessageFormat();
 
     public Path createPath(String fileName){
-        String filePath = resourcesDirectory.concat(fileName);
-        String fileResourcesPath = new ClassPathResource(filePath).getPath();
-        return Paths.get(fileResourcesPath);
+        String fileDirectoryPath = new ClassPathResource(resourcesDirectory).getPath();
+        String filePath = fileDirectoryPath+fileName;
+        return Paths.get(filePath);
     }
 
     public String createFileName(T pathArguments){
