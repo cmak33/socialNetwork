@@ -41,7 +41,7 @@ public class ProfileController {
     }
 
     @PostMapping("/my_profile")
-    public String refactorProfile(Model model,@ModelAttribute("pageOwner") @Valid User user, @ModelAttribute("avatar") MultipartFile avatar, BindingResult result){
+    public String refactorProfile(Model model,@ModelAttribute("pageOwner") @Valid User user,BindingResult result,@ModelAttribute("avatar") MultipartFile avatar){
         if(!result.hasErrors() && userService.isNewUsernameAppropriate(user.getUsername())){
                 if(!avatar.isEmpty()){
                     userService.setNewAvatar(user,avatar);
