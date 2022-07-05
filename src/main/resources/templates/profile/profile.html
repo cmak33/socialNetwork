@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="english">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div th:text="${pageOwner.getUsername()}"></div>
+<div th:text="${pageOwner.getStatus()}"></div>
+<img th:src="${'/images/avatars/'+pageOwner.getAvatarName()}"  alt="no image"/>
+<a th:href="@{/profiles/my_profile}">go home</a>
+</body>
+</html>
