@@ -35,9 +35,13 @@ public record RecordService(RecordRepository recordRepository, RecordPictureServ
         recordPictureOperations.deletePicture(imageName);
     }
 
-    public void addPictures(Post post, List<MultipartFile> pictures){
-        List<String> pictureNames = recordPictureOperations.savePostPictures(post,pictures);
-        post.setImagesNames(pictureNames);
+    public void addPictures(PostedRecord record, List<MultipartFile> pictures){
+        List<String> pictureNames = recordPictureOperations.savePostPictures(record,pictures);
+        record.getImagesNames().addAll(pictureNames);
+    }
+
+    public boolean isOwner(PostedRecord postedRecord, User user){
+        return postedRecord.getUser().getId().equals(user.getId());
     }
 
 }
