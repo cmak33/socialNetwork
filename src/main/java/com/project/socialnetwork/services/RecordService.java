@@ -1,6 +1,7 @@
 package com.project.socialnetwork.services;
 
-import com.project.socialnetwork.models.Post;
+import com.project.socialnetwork.models.PostedRecord;
+import com.project.socialnetwork.models.User;
 import com.project.socialnetwork.repositories.RecordRepository;
 import com.project.socialnetwork.services.picture_save_services.RecordPictureService;
 import org.springframework.stereotype.Service;
@@ -13,24 +14,24 @@ import java.util.Optional;
 public record RecordService(RecordRepository recordRepository, RecordPictureService recordPictureOperations) {
 
 
-    public void savePost(Post post) {
-        post.convertImagesNamesListToJson();
-        recordRepository.save(post);
+    public void saveRecord(PostedRecord record) {
+        record.convertImagesNamesListToJson();
+        recordRepository.save(record);
     }
 
-    public void deletePost(Post post){
-        recordRepository.delete(post);
-        recordPictureOperations.deletePostPictures(post);
+    public void deleteRecord(PostedRecord record){
+        recordRepository.delete(record);
+        recordPictureOperations.deletePostPictures(record);
     }
 
-    public Optional<Post> findById(Long id) {
-        Optional<Post> post = recordRepository.findById(id);
-        post.ifPresent(Post::convertJsonToImagesNamesList);
-        return post;
+    public Optional<PostedRecord> findById(Long id) {
+        Optional<PostedRecord> record = recordRepository.findById(id);
+        record.ifPresent(PostedRecord::convertJsonToImagesNamesList);
+        return record;
     }
 
-    public void deleteImage(String imageName, Post post) {
-        post.getImagesNames().remove(imageName);
+    public void deleteImage(String imageName, PostedRecord record) {
+        record.getImagesNames().remove(imageName);
         recordPictureOperations.deletePicture(imageName);
     }
 
