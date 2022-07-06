@@ -1,6 +1,7 @@
 package com.project.socialnetwork.services;
 
 
+import com.project.socialnetwork.models.PostedRecord;
 import com.project.socialnetwork.models.Role;
 import com.project.socialnetwork.models.User;
 import com.project.socialnetwork.repositories.RoleRepository;
@@ -69,6 +70,10 @@ public class UserService {
 
     public boolean isCurrentUserId(Long id){
         return id.equals(receiveCurrentUserId());
+    }
+
+    public boolean isCurrentUserOwnerOfRecord(PostedRecord record){
+        return isCurrentUserId(record.getUser().getId());
     }
 
     public Optional<User> findById(Long id){
