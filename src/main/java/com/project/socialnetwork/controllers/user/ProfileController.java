@@ -1,5 +1,6 @@
 package com.project.socialnetwork.controllers.user;
 
+import com.project.socialnetwork.models.PostedRecord;
 import com.project.socialnetwork.models.User;
 import com.project.socialnetwork.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -53,6 +55,14 @@ public class ProfileController {
             model.addAttribute("error","refactor data was inappropriate!");
         }
         return "/profile/my_profile";
+    }
+
+    @GetMapping("/my_records")
+    public String profileRecords(Model model){
+        User currentUser = userService.receiveCurrentUser();
+        List<Long> recordsId = currentUser.getPostedRecords().stream().map(PostedRecord::getId).toList();
+        model.addAttribute("recordsId",recordsId);
+        return "profile/records_list";
     }
 
 }
