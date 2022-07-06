@@ -1,4 +1,4 @@
-package com.example.springapplication.logic_classes.json_converter;
+package com.project.socialnetwork.logic_classes.json_converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

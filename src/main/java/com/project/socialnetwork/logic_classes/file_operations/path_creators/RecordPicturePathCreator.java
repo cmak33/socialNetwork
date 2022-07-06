@@ -4,7 +4,7 @@ import com.project.socialnetwork.logic_classes.file_operations.file_creation_arg
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class RecordPicturePathCreator extends FilePathCreator<RecordPicturePathArguments> {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
@@ -24,7 +24,7 @@ public class RecordPicturePathCreator extends FilePathCreator<RecordPicturePathA
     }
 
     private String createDateString(){
-        LocalDateTime localDateTime = LocalDateTime.now();
-        return dateFormat.format(localDateTime);
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 }

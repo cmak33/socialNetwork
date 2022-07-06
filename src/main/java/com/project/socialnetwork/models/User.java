@@ -22,12 +22,13 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String status;
+    private String avatarName;
     @Email
     private String email;
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
     @OneToMany(mappedBy = "user")
-    private Set<Post> posts;
+    private Set<PostedRecord> postedRecords;
     @OneToMany(mappedBy = "user")
     private Set<Like> likes;
     @OneToMany(mappedBy = "user")

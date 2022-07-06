@@ -18,5 +18,5 @@ public class Like {
     private User user;
     @ManyToOne
     @JoinColumn
-    private Post post;
+    private PostedRecord postedRecord;
 }

@@ -3,7 +3,7 @@ package com.project.socialnetwork.services.picture_save_services;
 import com.project.socialnetwork.logic_classes.file_operations.FileOperations;
 import com.project.socialnetwork.logic_classes.file_operations.file_creation_args.RecordPicturePathArguments;
 import com.project.socialnetwork.logic_classes.file_operations.path_creators.RecordPicturePathCreator;
-import com.project.socialnetwork.models.Post;
+import com.project.socialnetwork.models.PostedRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +18,7 @@ public class RecordPictureService extends PictureSaveService<RecordPicturePathAr
         super(pathCreator);
     }
 
-    public List<String> savePostPictures(Post post,List<MultipartFile> pictures){
+    public List<String> savePostPictures(PostedRecord post, List<MultipartFile> pictures){
         List<String> savedPicturesNames = new ArrayList<>();
         pictures.forEach(file->{
             RecordPicturePathArguments arguments = createPathArguments(file,post,savedPicturesNames.size());
@@ -28,11 +28,11 @@ public class RecordPictureService extends PictureSaveService<RecordPicturePathAr
         return savedPicturesNames;
     }
 
-    public void deletePostPictures(Post post){
+    public void deletePostPictures(PostedRecord post){
         post.getImagesNames().forEach(this::deletePicture);
     }
 
-    private RecordPicturePathArguments createPathArguments(MultipartFile file, Post post, int index){
+    private RecordPicturePathArguments createPathArguments(MultipartFile file, PostedRecord post, int index){
         String extension = FileOperations.getFileExtension(file.getOriginalFilename());
         return new RecordPicturePathArguments(post.getId(),extension,index);
     }

@@ -2,7 +2,7 @@ package com.project.socialnetwork.configurations;
 
 
 import com.project.socialnetwork.logic_classes.file_operations.path_creators.AvatarPathCreator;
-import com.project.socialnetwork.logic_classes.file_operations.path_creators.PostPicturePathCreator;
+import com.project.socialnetwork.logic_classes.file_operations.path_creators.RecordPicturePathCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
@@ -30,8 +30,8 @@ public class PathCreatorConfiguration {
     }
 
     @Bean
-    public PostPicturePathCreator getPostPicturePathCreator(){
-        return new PostPicturePathCreator(postImageResourcesPath);
+    public RecordPicturePathCreator getPostPicturePathCreator(){
+        return new RecordPicturePathCreator(postImageResourcesPath);
     }
 
 
