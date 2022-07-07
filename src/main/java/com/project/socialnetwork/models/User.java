@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,11 +29,11 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
     @OneToMany(mappedBy = "user")
-    private Set<PostedRecord> postedRecords;
+    private List<PostedRecord> postedRecords;
     @OneToMany(mappedBy = "user")
     private Set<Like> likes;
     @OneToMany(mappedBy = "user")
-    private Set<Comment> comments;
+    private List<Comment> comments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

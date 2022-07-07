@@ -24,7 +24,7 @@ public class PostedRecord {
     @Transient
     private List<String> imagesNames = new ArrayList<>();
     @OneToMany(mappedBy = "post")
-    private Set<Comment> comments;
+    private List<Comment> comments;
     @OneToMany(mappedBy = "postedRecord")
     private Set<Like> likes;
     @ManyToOne
