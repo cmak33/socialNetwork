@@ -31,9 +31,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<PostedRecord> postedRecords;
     @OneToMany(mappedBy = "user")
-    private Set<Like> likes;
-    @OneToMany(mappedBy = "user")
     private List<Comment> comments;
+    @OneToMany(mappedBy = "user")
+    private Set<RecordRating> ratings;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
