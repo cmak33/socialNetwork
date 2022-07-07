@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit record</title>
+</head>
+<body>
+<form method="POST"  id="finish" th:action="@{/records/{id}/edit(id=${record.getId()})}" th:object="${record}" enctype="multipart/form-data">
+    <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
+    <label for="text">text :</label>
+    <input id="text" type="text" th:field="*{text}">
+    <input type="file" name="pictures" accept="image/png, image/jpeg" multiple/>
+</form>
+<div th:each="imageName, imageIndex : ${record.getImagesNames()}">
+    <img th:src="${'/images/posts/'+imageName}"  alt="no image"/>
+    <form method="POST" th:action="@{/records/{id}/deletePicture/{index}(id=${record.getId()},index=${imageIndex.index})}">
+        <input type="submit"  value="delete">
+    </form>
+</div>
+<input type="submit"  form="finish" value="update">
+<form method="post" th:action="@{/records/{id}/delete(id=${record.getId()})}">
+    <input type="submit" value="delete this record">
+</form>
+<a th:href="@{/profiles/my_profile}">go to profile</a>
+</body>
+</html>

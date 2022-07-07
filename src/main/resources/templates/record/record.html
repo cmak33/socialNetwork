@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Record</title>
+</head>
+<body>
+<a th:href="@{/profiles/{id}(id=${record.getUser().getId()})}">publisher</a>
+<p th:text="${record.getText()}"></p>
+<div th:each="imageName : ${record.getImagesNames()}">
+    <img th:src="${'/images/posts/'+imageName}"  alt="no image"/>
+</div>
+<a th:if="${isOwner}" th:href="@{/records/{id}/edit(id=${record.getId()})}">edit</a>
+</body>
+</html>

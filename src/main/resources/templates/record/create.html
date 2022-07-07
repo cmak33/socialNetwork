@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create record</title>
+</head>
+<body>
+<form method="POST"  th:action="@{/records/create}" th:object="${record}" enctype="multipart/form-data">
+    <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
+    <label for="text">text :</label>
+    <input id="text" type="text" th:field="*{text}">
+    <input type="file" name="pictures" accept="image/png, image/jpeg" multiple/>
+    <input type="submit"  value="add">
+</form>
+<a th:href="@{/profiles/my_profile}">go to profile</a>
+</body>
+</html>
