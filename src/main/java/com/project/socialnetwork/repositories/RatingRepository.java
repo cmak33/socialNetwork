@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface RatingRepository extends JpaRepository<RecordRating,Long> {
     Optional<RecordRating> findByUserIdAndRatedRecordId(Long userId, Long ratedRecordId);
+
+    void deleteByUserIdAndRatedRecordId(Long userId,Long ratedRecordId);
 }
