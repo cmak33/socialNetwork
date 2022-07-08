@@ -3,6 +3,7 @@ package com.project.socialnetwork.models;
 import com.project.socialnetwork.logic_classes.json_converter.JsonConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,7 +22,9 @@ public class RateableRecord {
     private String text;
     private Date date;
     private String jsonImagesNames;
+    @Formula("(select count(*) from likes where rated_record_id = id)")
     private Long likesCount;
+    @Formula("(select count(*) from dislikes where rated_record_id = id)")
     private Long dislikeCounts;
     @Transient
     private List<String> imagesNames = new ArrayList<>();
@@ -29,9 +32,7 @@ public class RateableRecord {
     @JoinColumn
     private User user;
     @OneToMany(mappedBy = "ratedRecord")
-    private Set<Like> likes;
-    @OneToMany(mappedBy = "ratedRecord")
-    private Set<Dislike> dislikes;
+    private Set<RecordRating> ratings;
 
 
     public void convertJsonToImagesNamesList(){
