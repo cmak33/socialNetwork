@@ -9,6 +9,14 @@
 <div th:each="imageName : ${record.getImagesNames()}">
     <img th:src="${'/images/posts/'+imageName}"  alt="no image"/>
 </div>
-<a th:if="${isOwner}" th:href="@{/records/{id}/edit(id=${record.getId()})}">edit</a>
+<form method="post" th:action="@{/rating/{id}/like(id=${record.getId()})}">
+    <label for="likeButton" th:text="${record.getLikesCount()}"></label>
+    <input id="likeButton" th:style="${isLiked ? 'red:' : 'color:blue'}" type="submit" value="like">
+</form>
+<form  method="post" th:action="@{/rating/{id}/dislike(id=${record.getId()})}">
+    <label for="dislikeButton" th:text="${record.getDislikesCount()}"></label>
+    <input id="dislikeButton" th:style="${isDisliked ? 'red:' : 'color:blue'}" type="submit" value="dislike">
+</form>
+<a th:if="${isOwner}" style="margin-top:40px;" th:href="@{/records/{id}/edit(id=${record.getId()})}">edit</a>
 </body>
 </html>
