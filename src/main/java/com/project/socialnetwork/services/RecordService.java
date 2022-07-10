@@ -13,7 +13,6 @@ import java.util.Optional;
 @Service
 public record RecordService(RecordRepository recordRepository, RecordPictureService recordPictureOperations) {
 
-
     public void saveRecord(PostedRecord record) {
         record.convertImagesNamesListToJson();
         recordRepository.save(record);

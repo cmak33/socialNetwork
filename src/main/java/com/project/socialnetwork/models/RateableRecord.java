@@ -13,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name="rateable_records")
 @Getter
 @Setter
 public class RateableRecord {
@@ -22,10 +23,10 @@ public class RateableRecord {
     private String text;
     private Date date;
     private String jsonImagesNames;
-    @Formula("(select count(*) from likes where rated_record_id = id)")
+    @Formula("(select count(*) from likes l where l.rated_record_id = id)")
     private Long likesCount;
-    @Formula("(select count(*) from dislikes where rated_record_id = id)")
-    private Long dislikeCounts;
+    @Formula("(select count(*) from dislikes d where d.rated_record_id = id)")
+    private Long dislikesCount;
     @Transient
     private List<String> imagesNames = new ArrayList<>();
     @ManyToOne
