@@ -101,4 +101,9 @@ public class RecordController {
         record.ifPresent(recordService::deleteRecord);
         return "redirect:/profiles/my_profile";
     }
+
+    @PostMapping("/{id}/like")
+    public String like(@PathVariable Long id){
+        return String.format("redirect:/records/%d",id);
+    }
 }
