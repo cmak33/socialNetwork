@@ -3,7 +3,7 @@ package com.project.socialnetwork.services.picture_save_services;
 import com.project.socialnetwork.logic_classes.file_operations.FileOperations;
 import com.project.socialnetwork.logic_classes.file_operations.file_creation_args.RecordPicturePathArguments;
 import com.project.socialnetwork.logic_classes.file_operations.path_creators.RecordPicturePathCreator;
-import com.project.socialnetwork.models.PostedRecord;
+import com.project.socialnetwork.models.entities.PostedRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,22 +18,22 @@ public class RecordPictureService extends PictureSaveService<RecordPicturePathAr
         super(pathCreator);
     }
 
-    public List<String> savePostPictures(PostedRecord post, List<MultipartFile> pictures){
+    public List<String> savePostPictures(PostedRecord postedRecord, List<MultipartFile> pictures){
         List<String> savedPicturesNames = new ArrayList<>();
         pictures.forEach(file->{
-            RecordPicturePathArguments arguments = createPathArguments(file,post,savedPicturesNames.size());
+            RecordPicturePathArguments arguments = createPathArguments(file,postedRecord,savedPicturesNames.size());
             Optional<String> name = savePicture(file,arguments);
             name.ifPresent(savedPicturesNames::add);
                 });
         return savedPicturesNames;
     }
 
-    public void deletePostPictures(PostedRecord post){
-        post.getImagesNames().forEach(this::deletePicture);
+    public void deletePostPictures(PostedRecord postedRecord){
+        postedRecord.getImagesNames().forEach(this::deletePicture);
     }
 
-    private RecordPicturePathArguments createPathArguments(MultipartFile file, PostedRecord post, int index){
+    private RecordPicturePathArguments createPathArguments(MultipartFile file, PostedRecord postedRecord, int index){
         String extension = FileOperations.getFileExtension(file.getOriginalFilename());
-        return new RecordPicturePathArguments(post.getId(),extension,index);
+        return new RecordPicturePathArguments(postedRecord.getId(),extension,index);
     }
 }

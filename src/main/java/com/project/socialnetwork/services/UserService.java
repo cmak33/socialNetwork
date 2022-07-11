@@ -1,9 +1,9 @@
 package com.project.socialnetwork.services;
 
 
-import com.project.socialnetwork.models.PostedRecord;
-import com.project.socialnetwork.models.Role;
-import com.project.socialnetwork.models.User;
+import com.project.socialnetwork.models.entities.PostedRecord;
+import com.project.socialnetwork.models.entities.Role;
+import com.project.socialnetwork.models.entities.User;
 import com.project.socialnetwork.repositories.RoleRepository;
 import com.project.socialnetwork.repositories.UserRepository;
 import com.project.socialnetwork.services.picture_save_services.UserAvatarsService;

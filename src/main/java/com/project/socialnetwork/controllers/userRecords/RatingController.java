@@ -1,7 +1,7 @@
 package com.project.socialnetwork.controllers.userRecords;
 
 import com.project.socialnetwork.logic_classes.auxiliary_classes.AuxiliaryMethods;
-import com.project.socialnetwork.models.*;
+import com.project.socialnetwork.models.entities.*;
 import com.project.socialnetwork.repositories.RateableRecordRepository;
 import com.project.socialnetwork.services.RatingService;
 import com.project.socialnetwork.services.UserService;

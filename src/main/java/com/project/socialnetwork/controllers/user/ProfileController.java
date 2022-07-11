@@ -1,7 +1,7 @@
 package com.project.socialnetwork.controllers.user;
 
-import com.project.socialnetwork.models.PostedRecord;
-import com.project.socialnetwork.models.User;
+import com.project.socialnetwork.models.entities.PostedRecord;
+import com.project.socialnetwork.models.entities.User;
 import com.project.socialnetwork.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

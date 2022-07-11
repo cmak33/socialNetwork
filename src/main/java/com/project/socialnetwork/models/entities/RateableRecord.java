@@ -1,4 +1,4 @@
-package com.project.socialnetwork.models;
+package com.project.socialnetwork.models.entities;
 
 import com.project.socialnetwork.logic_classes.json_converter.JsonConverter;
 import lombok.Getter;

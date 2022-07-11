@@ -1,10 +1,9 @@
 package com.project.socialnetwork.controllers.userRecords;
 
-import com.project.socialnetwork.logic_classes.auxiliary_classes.AuxiliaryMethods;
-import com.project.socialnetwork.models.Dislike;
-import com.project.socialnetwork.models.Like;
-import com.project.socialnetwork.models.PostedRecord;
-import com.project.socialnetwork.models.RecordRating;
+import com.project.socialnetwork.models.entities.Dislike;
+import com.project.socialnetwork.models.entities.Like;
+import com.project.socialnetwork.models.entities.PostedRecord;
+import com.project.socialnetwork.models.entities.RecordRating;
 import com.project.socialnetwork.repositories.RatingRepository;
 import com.project.socialnetwork.services.RecordService;
 import com.project.socialnetwork.services.UserService;
@@ -17,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Optional;
 
 @Controller

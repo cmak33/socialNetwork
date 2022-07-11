@@ -1,7 +1,9 @@
 package com.project.socialnetwork.services;
 
 import com.project.socialnetwork.logic_classes.auxiliary_classes.AuxiliaryMethods;
-import com.project.socialnetwork.models.*;
+import com.project.socialnetwork.models.entities.RateableRecord;
+import com.project.socialnetwork.models.entities.RecordRating;
+import com.project.socialnetwork.models.entities.User;
 import com.project.socialnetwork.repositories.RatingRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,7 @@ import java.util.Optional;
 @Service
 public record RatingService(RatingRepository ratingRepository) {
 
-    public void addRating(RateableRecord ratedRecord,User user,RecordRating emptyRating){
+    public void addRating(RateableRecord ratedRecord, User user, RecordRating emptyRating){
         Optional<RecordRating> oldRating = findByUserAndRecord(user.getId(),ratedRecord.getId());
         boolean shouldAddNewRating = true;
         if(oldRating.isPresent()){

@@ -1,6 +1,6 @@
 package com.project.socialnetwork.controllers.authorisation;
 
-import com.project.socialnetwork.models.User;
+import com.project.socialnetwork.models.entities.User;
 import com.project.socialnetwork.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

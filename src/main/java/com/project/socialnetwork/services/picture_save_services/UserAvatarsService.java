@@ -3,7 +3,7 @@ package com.project.socialnetwork.services.picture_save_services;
 import com.project.socialnetwork.logic_classes.file_operations.FileOperations;
 import com.project.socialnetwork.logic_classes.file_operations.file_creation_args.FilePathArguments;
 import com.project.socialnetwork.logic_classes.file_operations.path_creators.AvatarPathCreator;
-import com.project.socialnetwork.models.User;
+import com.project.socialnetwork.models.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

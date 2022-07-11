@@ -1,6 +1,6 @@
 package com.project.socialnetwork.repositories;
 
-import com.project.socialnetwork.models.RecordRating;
+import com.project.socialnetwork.models.entities.RecordRating;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

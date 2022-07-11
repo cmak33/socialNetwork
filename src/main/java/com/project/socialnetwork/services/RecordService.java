@@ -1,7 +1,7 @@
 package com.project.socialnetwork.services;
 
-import com.project.socialnetwork.models.PostedRecord;
-import com.project.socialnetwork.models.User;
+import com.project.socialnetwork.models.entities.PostedRecord;
+import com.project.socialnetwork.models.entities.User;
 import com.project.socialnetwork.repositories.RecordRepository;
 import com.project.socialnetwork.services.picture_save_services.RecordPictureService;
 import org.springframework.stereotype.Service;

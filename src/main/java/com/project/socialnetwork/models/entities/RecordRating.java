@@ -1,4 +1,4 @@
-package com.project.socialnetwork.models;
+package com.project.socialnetwork.models.entities;
 
 
 import lombok.Getter;
