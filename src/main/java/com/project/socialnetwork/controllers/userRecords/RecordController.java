@@ -1,6 +1,11 @@
-package com.project.socialnetwork.controllers.user;
+package com.project.socialnetwork.controllers.userRecords;
 
+import com.project.socialnetwork.logic_classes.auxiliary_classes.AuxiliaryMethods;
+import com.project.socialnetwork.models.Dislike;
+import com.project.socialnetwork.models.Like;
 import com.project.socialnetwork.models.PostedRecord;
+import com.project.socialnetwork.models.RecordRating;
+import com.project.socialnetwork.repositories.RatingRepository;
 import com.project.socialnetwork.services.RecordService;
 import com.project.socialnetwork.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +27,7 @@ import java.util.Optional;
 public class RecordController {
     private final RecordService recordService;
     private final UserService userService;
+    private final RatingRepository ratingRepository;
 
     @ModelAttribute("record")
     public PostedRecord currentRecord(){
@@ -35,6 +41,15 @@ public class RecordController {
             model.addAttribute("record",value);
             boolean isOwner = recordService.isOwner(value, userService.receiveCurrentUser());
             model.addAttribute("isOwner",isOwner);
+            boolean isLiked = false;
+            boolean isDisliked = false;
+            Optional<RecordRating> rating = ratingRepository.findByUserIdAndRatedRecordId(userService.receiveCurrentUser().getId(), value.getId());
+            if(rating.isPresent()){
+                isLiked = Like.class.equals(rating.get().getClass());
+                isDisliked = Dislike.class.equals(rating.get().getClass());
+            }
+            model.addAttribute("isLiked",isLiked);
+            model.addAttribute("isDisliked",isDisliked);
             return "record/record";
         }).orElse("pageNotFound/pageNotFoundView");
     }
@@ -99,5 +114,10 @@ public class RecordController {
         Optional<PostedRecord> record = recordService.findById(id);
         record.ifPresent(recordService::deleteRecord);
         return "redirect:/profiles/my_profile";
+    }
+
+    @PostMapping("/{id}/like")
+    public String like(@PathVariable Long id){
+        return String.format("redirect:/records/%d",id);
     }
 }
