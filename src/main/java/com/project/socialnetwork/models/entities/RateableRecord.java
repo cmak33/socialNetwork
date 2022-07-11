@@ -3,6 +3,7 @@ package com.project.socialnetwork.models.entities;
 import com.project.socialnetwork.logic_classes.json_converter.JsonConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class RateableRecord {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private String text;
+    @CreationTimestamp
     private Date date;
     private String jsonImagesNames;
     @Formula("(select count(*) from likes l where l.rated_record_id = id)")
