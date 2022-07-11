@@ -3,6 +3,7 @@ package com.project.socialnetwork.models;
 import com.project.socialnetwork.logic_classes.json_converter.JsonConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,8 +19,9 @@ public class PostedRecord {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+    @CreationTimestamp
+    private Date creationDate;
     private String text;
-    private Date date;
     private String jsonImagesNames;
     @Transient
     private List<String> imagesNames = new ArrayList<>();

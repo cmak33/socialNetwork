@@ -48,7 +48,6 @@ public class RecordController {
     @PostMapping("/create")
     public String createRecordPost(@ModelAttribute("record") @Valid PostedRecord postedRecord,BindingResult result,@ModelAttribute("pictures") MultipartFile[] pictures){
         if(!result.hasErrors()) {
-            postedRecord.setDate(new Date());
             postedRecord.setUser(userService.receiveCurrentUser());
             recordService.saveRecord(postedRecord);
             if(isMultipartFilesArrayNotEmpty(pictures)) {
