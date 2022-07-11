@@ -1,5 +1,6 @@
 package com.project.socialnetwork.controllers.user;
 
+import com.project.socialnetwork.models.dtos.UserDTO;
 import com.project.socialnetwork.models.entities.PostedRecord;
 import com.project.socialnetwork.models.entities.User;
 import com.project.socialnetwork.services.UserService;
@@ -17,24 +18,18 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/profiles")
 @RequiredArgsConstructor
-@SessionAttributes("pageOwner")
 public class ProfileController {
     private final UserService userService;
 
-    @ModelAttribute("pageOwner")
-    public User pageOwner(){
-        return new User();
-    }
-
     @GetMapping("/my_profile")
     public String profile(Model model){
-        model.addAttribute("pageOwner",userService.receiveCurrentUser());
+        model.addAttribute("pageOwner",userService.receiveCurrentUserDTO());
         return "/profile/my_profile";
     }
 
     @GetMapping("/{id}")
     public String profileById(@PathVariable Long id, Model model){
-        Optional<User> pageOwner = userService.findById(id);
+        Optional<UserDTO> pageOwner = userService.receiveDTOById(id);
         return pageOwner.map(owner->{
             model.addAttribute("pageOwner",pageOwner.get());
             boolean isOwner = userService.isCurrentUserId(id);
@@ -43,15 +38,15 @@ public class ProfileController {
     }
 
     @PostMapping("/my_profile")
-    public String refactorProfile(Model model,@ModelAttribute("pageOwner") @Valid User user,BindingResult result,@ModelAttribute("avatar") MultipartFile avatar){
+    public String refactorProfile(Model model, @ModelAttribute("pageOwner") @Valid UserDTO user, BindingResult result, @ModelAttribute("avatar") MultipartFile avatar){
         if(!result.hasErrors() && userService.isNewUsernameAppropriate(user.getUsername())){
                 if(!avatar.isEmpty()){
                     userService.setNewAvatar(user,avatar);
                 }
-                userService.updateUser(user);
+                userService.updateUserByDTO(user);
                 model.addAttribute("pageOwner",user);
         } else{
-            model.addAttribute("pageOwner",userService.receiveCurrentUser());
+            model.addAttribute("pageOwner",userService.receiveCurrentUserDTO());
             model.addAttribute("error","refactor data was inappropriate!");
         }
         return "/profile/my_profile";
