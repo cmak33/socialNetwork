@@ -7,10 +7,9 @@ import com.project.socialnetwork.models.entities.Role;
 import com.project.socialnetwork.models.entities.User;
 import com.project.socialnetwork.repositories.RoleRepository;
 import com.project.socialnetwork.repositories.UserRepository;
-import com.project.socialnetwork.services.entities_dto_converter.EntityDataTransferObjectConverter;
+import com.project.socialnetwork.services.entity_data_transfer_object_converters.UserConverter;
 import com.project.socialnetwork.services.picture_save_services.UserAvatarsService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,12 +25,12 @@ import java.util.Set;
 @RequiredArgsConstructor
 @PropertySource("classpath:/properties/user.properties")
 @PropertySource("classpath:properties/imagesPaths.properties")
-public class UserService implements EntityDataTransferObjectConverter<User,UserDTO> {
+public class UserService{
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserAvatarsService avatarsOperations;
-    private final ModelMapper modelMapper;
+    private final UserConverter userConverter;
     @Value("${defaultRole}")
     private String defaultRole;
     @Value("${defaultAvatarName}")
@@ -57,7 +56,8 @@ public class UserService implements EntityDataTransferObjectConverter<User,UserD
     }
 
     public void setNewAvatar(UserDTO user,MultipartFile avatar){
-        avatarsOperations.setUserAvatar(user,avatar);
+        Optional<String> avatarName = avatarsOperations.saveAvatar(user.getId(),user.getAvatarName(),avatar);
+        avatarName.ifPresent(user::setAvatarName);
     }
 
 
@@ -70,7 +70,7 @@ public class UserService implements EntityDataTransferObjectConverter<User,UserD
     }
 
     public void updateUserByDTO(UserDTO userDTO){
-        User user = convertToEntity(userDTO);
+        User user = userConverter.convertToEntity(userDTO);
         userRepository.save(user);
     }
 
@@ -83,7 +83,7 @@ public class UserService implements EntityDataTransferObjectConverter<User,UserD
     }
 
     public Optional<UserDTO> receiveDTOById(Long id){
-        return findById(id).map(this::convertToDTO);
+        return findById(id).map(userConverter::convertToDTO);
     }
 
     public Optional<User> findById(Long id){
@@ -92,7 +92,7 @@ public class UserService implements EntityDataTransferObjectConverter<User,UserD
 
     public UserDTO receiveCurrentUserDTO(){
         User user = receiveCurrentUser();
-        return user!=null?convertToDTO(user):null;
+        return user!=null?userConverter.convertToDTO(user):null;
     }
 
     public User receiveCurrentUser(){
@@ -105,16 +105,4 @@ public class UserService implements EntityDataTransferObjectConverter<User,UserD
         return ((User)principal).getId();
     }
 
-    @Override
-    public UserDTO convertToDTO(User entity) {
-        return modelMapper.map(entity,UserDTO.class);
-    }
-
-    @Override
-    public User convertToEntity(UserDTO dto) {
-        User newUser = modelMapper.map(dto,User.class);
-        Optional<User> oldUser = findById(dto.getId());
-        oldUser.ifPresent(value-> newUser.setPassword(value.getPassword()));
-        return newUser;
-    }
 }

@@ -1,6 +1,5 @@
-package com.project.socialnetwork.controllers.userRecords;
+package com.project.socialnetwork.controllers.user_records;
 
-import com.project.socialnetwork.models.dtos.RateableRecordDTO;
 import com.project.socialnetwork.models.entities.Dislike;
 import com.project.socialnetwork.models.entities.Like;
 import com.project.socialnetwork.models.entities.PostedRecord;
@@ -35,7 +34,7 @@ public class RecordController {
 
     @GetMapping("/{id}")
     public String showRecordById(@PathVariable Long id, Model model){
-        Optional<PostedRecord> postedRecord = recordService.findById(id,PostedRecord.class);
+        Optional<PostedRecord> postedRecord = recordService.findById(id);
         return postedRecord.map(value->{
             model.addAttribute("record",value);
             boolean isOwner = recordService.isOwner(value, userService.receiveCurrentUser());
@@ -55,18 +54,17 @@ public class RecordController {
 
     @GetMapping("/create")
     public String createRecord(Model model){
-        model.addAttribute("record",new RateableRecordDTO());
+        model.addAttribute("record",new PostedRecord());
         return "record/create";
     }
 
     @PostMapping("/create")
-    public String createRecordPost(@ModelAttribute("record") @Valid RateableRecordDTO dto,BindingResult result,@ModelAttribute("pictures") MultipartFile[] pictures){
+    public String createRecordPost(@ModelAttribute("record") @Valid PostedRecord postedRecord,BindingResult result,@ModelAttribute("pictures") MultipartFile[] pictures){
         if(!result.hasErrors()) {
-            PostedRecord record = recordService.convertToEntity(dto,PostedRecord.class);
-            record.setUser(userService.receiveCurrentUser());
+            postedRecord.setUser(userService.receiveCurrentUser());
             recordService.saveRecord(postedRecord);
             if(isMultipartFilesArrayNotEmpty(pictures)) {
-                recordService.addPictures(dto, Arrays.stream(pictures).toList());
+                recordService.addPictures(postedRecord, Arrays.stream(pictures).toList());
                 recordService.saveRecord(postedRecord);
             }
         }
@@ -75,8 +73,8 @@ public class RecordController {
 
     @GetMapping("/{id}/edit")
     public String editRecord(@PathVariable Long id,Model model){
-        Optional<RateableRecordDTO> record = recordService.receiveDTOById(id);
-        if(record.isPresent() && recordService.isOwner(record.get())){
+        Optional<PostedRecord> record = recordService.findById(id);
+        if(record.isPresent() && userService.isCurrentUserOwnerOfRecord(record.get())){
             model.addAttribute("record",record.get());
             return "record/edit";
         } else{

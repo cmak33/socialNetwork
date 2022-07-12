@@ -1,4 +1,4 @@
-package com.project.socialnetwork.controllers.userRecords;
+package com.project.socialnetwork.controllers.user_records;
 
 import com.project.socialnetwork.logic_classes.auxiliary_classes.AuxiliaryMethods;
 import com.project.socialnetwork.models.entities.*;
