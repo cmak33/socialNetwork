@@ -28,11 +28,11 @@ public class User implements UserDetails {
     private String email;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<PostedRecord> postedRecords;
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private Set<RecordRating> ratings;
 
 

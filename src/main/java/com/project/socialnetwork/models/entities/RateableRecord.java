@@ -34,7 +34,7 @@ public class RateableRecord {
     @ManyToOne
     @JoinColumn
     private User user;
-    @OneToMany(mappedBy = "ratedRecord")
+    @OneToMany(mappedBy = "ratedRecord",cascade = CascadeType.REMOVE)
     private Set<RecordRating> ratings;
 
 

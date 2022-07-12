@@ -11,6 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 public class PostedRecord extends RateableRecord{
-    @OneToMany(mappedBy = "postedRecord")
+    @OneToMany(mappedBy = "postedRecord",cascade = CascadeType.REMOVE)
     private List<Comment> comments;
 }
