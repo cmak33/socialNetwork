@@ -52,12 +52,15 @@ public class ProfileController {
         return "/profile/my_profile";
     }
 
-    @GetMapping("/my_records")
-    public String profileRecords(Model model){
-        User currentUser = userService.receiveCurrentUser();
-        List<Long> recordsId = currentUser.getPostedRecords().stream().map(PostedRecord::getId).toList();
-        model.addAttribute("recordsId",recordsId);
-        return "profile/records_list";
+    @GetMapping("/{id}/records")
+    public String profileRecords(@PathVariable Long id, Model model){
+        Optional<User> user = userService.findById(id);
+        return user.map(value->{
+            List<Long> recordsId = value.getPostedRecords().stream().map(PostedRecord::getId).toList();
+            model.addAttribute("recordsId",recordsId);
+            model.addAttribute("isOwner",userService.isCurrentUserId(id));
+            return "profile/records_list";
+        }).orElse("pageNotFound/pageNotFoundView");
     }
 
 }
