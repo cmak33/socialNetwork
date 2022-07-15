@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Record</title>
+</head>
+<body>
+<a th:href="@{/profiles/{id}(id=${postedRecord.getUserId()})}">publisher</a>
+<p th:text="${postedRecord.getText()}"></p>
+<div th:each="imageName : ${postedRecord.getImagesNames()}">
+    <img th:src="${'/images/posts/'+imageName}"  alt="no image"/>
+</div>
+<form method="post" th:action="@{/rating/{id}/like(id=${postedRecord.getId()})}">
+    <label for="likeButton" th:text="${postedRecord.getLikesCount()}"></label>
+    <input id="likeButton" th:style="${postedRecord.getLiked() ? 'red:' : 'color:blue'}" type="submit" value="like">
+</form>
+<form  method="post" th:action="@{/rating/{id}/dislike(id=${postedRecord.getId()})}">
+    <label for="dislikeButton" th:text="${postedRecord.getDislikesCount()}"></label>
+    <input id="dislikeButton" th:style="${postedRecord.getDisliked() ? 'red:' : 'color:blue'}" type="submit" value="dislike">
+</form>
+<a th:if="${postedRecord.isOwner()}" style="margin-top:40px;" th:href="@{/records/{id}/edit(id=${postedRecord.getId()})}">edit</a>
+<p>Comments:</p>
+<form method="POST"  th:action="@{/records/{id}/create_comment(id=${postedRecord.getId()})}" th:object="${newComment}" enctype="multipart/form-data">
+    <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
+    <label for="text">text :</label>
+    <input id="text" type="text" th:field="*{text}">
+    <input type="file" name="pictures" accept="image/png, image/jpeg" multiple/>
+    <input type="submit"  value="create">
+</form>
+<div th:each="comment : ${comments}">
+    <a th:href="@{/profiles/{id}(id=${pcomment.getUserId()})}">publisher</a>
+    <p th:text="${comment.getText()}"></p>
+    <div th:each="imageName : ${comment.getImagesNames()}">
+        <img th:src="${'/images/posts/'+imageName}"  alt="no image"/>
+    </div>
+    <form method="post" th:action="@{/rating/{id}/like(id=${comment.getId()})}">
+        <label  th:text="${comment.getLikesCount()}"></label>
+        <input  th:style="${comment.getLiked() ? 'red:' : 'color:blue'}" type="submit" value="like">
+    </form>
+    <form  method="post" th:action="@{/rating/{id}/dislike(id=${comment.getId()})}">
+        <label  th:text="${comment.getDislikesCount()}"></label>
+        <input  th:style="${comment.getDisliked() ? 'red:' : 'color:blue'}" type="submit" value="dislike">
+    </form>
+    <a th:if="${comment.isOwner()}" style="margin-top:40px;" th:href="@{/records/{id}/edit(id=${comment.getId()})}">edit</a>
+</div>
+</body>
+</html>
