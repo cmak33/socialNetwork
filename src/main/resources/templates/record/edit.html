@@ -6,6 +6,9 @@
 </head>
 <body>
 <form method="POST"  id="finish" th:action="@{/records/{id}/edit(id=${record.getId()})}" th:object="${record}" enctype="multipart/form-data">
+    <input th:type="hidden" th:field="*{id}">
+    <input th:type="hidden" th:field="*{imagesNames}">
+    <input th:type="hidden" th:field="*{entityClass}">
     <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
     <label for="text">text :</label>
     <input id="text" type="text" th:field="*{text}">
@@ -21,6 +24,6 @@
 <form method="post" th:action="@{/records/{id}/delete(id=${record.getId()})}">
     <input type="submit" value="delete this record">
 </form>
-<a th:href="@{/profiles/my_profile}">go to profile</a>
+<a th:href="@{/profiles/my_profile}">go to profile 2</a>
 </body>
 </html>

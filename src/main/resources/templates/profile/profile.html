@@ -9,5 +9,6 @@
 <div th:text="${pageOwner.getStatus()}"></div>
 <img th:src="${'/images/avatars/'+pageOwner.getAvatarName()}"  alt="no image"/>
 <a th:href="@{/profiles/my_profile}">go home</a>
+<a th:href="@{/profiles/{id}/records(id=${pageOwner.getId()})}">See records</a>
 </body>
 </html>

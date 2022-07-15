@@ -6,9 +6,9 @@
 </head>
 <body>
 <div th:each="currentId : ${recordsId}">
-    <a th:href="@{/records/{id}(id=${currentId})}" th:text="${'go to record with id '+currentId}"></a>
+    <a th:href="@{/records/postedRecord/{id}(id=${currentId})}" th:text="${'go to record with id '+currentId}"></a>
 </div>
-<a th:href="@{/records/create}">Create record</a>
+<a th:if="${isOwner}" th:href="@{/records/create}">Create record</a>
 <a th:href="@{/profiles/my_profile}">Return to your profile</a>
 </body>
 </html>

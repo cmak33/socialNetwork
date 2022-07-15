@@ -6,6 +6,8 @@
 </head>
 <body>
 <form method="POST"  th:action="@{/records/create}" th:object="${record}" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{entityClass}">
+    <input th:type="hidden" th:field="*{imagesNames}">
     <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
     <label for="text">text :</label>
     <input id="text" type="text" th:field="*{text}">

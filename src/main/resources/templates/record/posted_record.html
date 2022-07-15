@@ -17,17 +17,19 @@
     <label for="dislikeButton" th:text="${postedRecord.getDislikesCount()}"></label>
     <input id="dislikeButton" th:style="${postedRecord.getDisliked() ? 'red:' : 'color:blue'}" type="submit" value="dislike">
 </form>
-<a th:if="${postedRecord.isOwner()}" style="margin-top:40px;" th:href="@{/records/{id}/edit(id=${postedRecord.getId()})}">edit</a>
-<p>Comments:</p>
+<a th:if="${postedRecord.getOwner()}" style="margin-top:40px;" th:href="@{/records/{id}/edit(id=${postedRecord.getId()})}">edit</a>
+<p>Add comment</p>
 <form method="POST"  th:action="@{/records/{id}/create_comment(id=${postedRecord.getId()})}" th:object="${newComment}" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}">
     <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
     <label for="text">text :</label>
     <input id="text" type="text" th:field="*{text}">
     <input type="file" name="pictures" accept="image/png, image/jpeg" multiple/>
     <input type="submit"  value="create">
 </form>
+<p>Comments:</p>
 <div th:each="comment : ${comments}">
-    <a th:href="@{/profiles/{id}(id=${pcomment.getUserId()})}">publisher</a>
+    <a th:href="@{/profiles/{id}(id=${comment.getUserId()})}">publisher</a>
     <p th:text="${comment.getText()}"></p>
     <div th:each="imageName : ${comment.getImagesNames()}">
         <img th:src="${'/images/posts/'+imageName}"  alt="no image"/>
@@ -40,7 +42,7 @@
         <label  th:text="${comment.getDislikesCount()}"></label>
         <input  th:style="${comment.getDisliked() ? 'red:' : 'color:blue'}" type="submit" value="dislike">
     </form>
-    <a th:if="${comment.isOwner()}" style="margin-top:40px;" th:href="@{/records/{id}/edit(id=${comment.getId()})}">edit</a>
+    <a th:if="${comment.getOwner()}" style="margin-top:40px;" th:href="@{/records/{id}/edit(id=${comment.getId()})}">edit</a>
 </div>
 </body>
 </html>

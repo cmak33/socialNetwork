@@ -22,6 +22,6 @@
     <input text="choose new avatar" type="file" name="avatar" accept="image/png, image/jpeg" />
     <input type="submit" value="Update">
 </form>
-<a th:href="@{/profiles/my_records}">See your records</a>
+<a th:href="@{/profiles/{id}/records(id=${pageOwner.getId()})}">See your records</a>
 </body>
 </html>
