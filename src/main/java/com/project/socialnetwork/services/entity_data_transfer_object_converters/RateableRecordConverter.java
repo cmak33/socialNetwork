@@ -34,20 +34,24 @@ public class RateableRecordConverter extends EntityDataTransferObjectConverter<R
         try{
             record = (RateableRecord) modelMapper.map(dto,Class.forName(dto.getEntityClass()));
             if(record.getId()!=null) {
-                Optional<RateableRecord> oldRecord = recordRepository.findById(record.getId());
-                if (oldRecord.isPresent()) {
-                    record.setDate(oldRecord.get().getDate());
-                }
-                if (record.getClass().equals(Comment.class)) {
-                    Optional<Comment> comment = commentRepository.findById(dto.getId());
-                    if (comment.isPresent()) {
-                        ((Comment) record).setPostedRecord(comment.get().getPostedRecord());
-                    }
-                }
+                setEntityDate(record);
+                setPostedRecordIfComment(record);
             }
         } catch (Exception exception){
             record = new RateableRecord();
         }
         return record;
+    }
+
+    private void setEntityDate(RateableRecord record){
+        Optional<RateableRecord> oldRecord = recordRepository.findById(record.getId());
+        oldRecord.ifPresent(rateableRecord -> record.setDate(rateableRecord.getDate()));
+    }
+
+    private void setPostedRecordIfComment(RateableRecord record){
+        if (record.getClass().equals(Comment.class)) {
+            Optional<Comment> comment = commentRepository.findById(record.getId());
+            comment.ifPresent(value -> ((Comment) record).setPostedRecord(value.getPostedRecord()));
+        }
     }
 }
