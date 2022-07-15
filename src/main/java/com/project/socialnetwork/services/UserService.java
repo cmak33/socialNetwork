@@ -2,7 +2,6 @@ package com.project.socialnetwork.services;
 
 
 import com.project.socialnetwork.models.dtos.UserDTO;
-import com.project.socialnetwork.models.entities.PostedRecord;
 import com.project.socialnetwork.models.entities.Role;
 import com.project.socialnetwork.models.entities.User;
 import com.project.socialnetwork.repositories.RoleRepository;
@@ -78,10 +77,6 @@ public class UserService{
         return id.equals(receiveCurrentUserId());
     }
 
-    public boolean isCurrentUserOwnerOfRecord(PostedRecord record){
-        return isCurrentUserId(record.getUser().getId());
-    }
-
     public Optional<UserDTO> receiveDTOById(Long id){
         return findById(id).map(userConverter::convertToDTO);
     }
@@ -100,7 +95,7 @@ public class UserService{
         return findById(id).orElse(null);
     }
 
-    private Long receiveCurrentUserId(){
+    public Long receiveCurrentUserId(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ((User)principal).getId();
     }
