@@ -1,16 +1,14 @@
 package com.project.socialnetwork.services;
 
 import com.project.socialnetwork.logic_classes.auxiliary_classes.AuxiliaryMethods;
-import com.project.socialnetwork.models.entities.RateableRecord;
-import com.project.socialnetwork.models.entities.RecordRating;
-import com.project.socialnetwork.models.entities.User;
+import com.project.socialnetwork.models.entities.*;
 import com.project.socialnetwork.repositories.RatingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public record RatingService(RatingRepository ratingRepository) {
+public record RatingService(RatingRepository ratingRepository,UserService userService) {
 
     public void addRating(RateableRecord ratedRecord, User user, RecordRating emptyRating){
         Optional<RecordRating> oldRating = findByUserAndRecord(user.getId(),ratedRecord.getId());
@@ -27,11 +25,23 @@ public record RatingService(RatingRepository ratingRepository) {
     }
 
 
-    public void deleteUserRating(Long userId,Long recordId){
-        ratingRepository.deleteByUserIdAndRatedRecordId(userId,recordId);
-    }
-
     public Optional<RecordRating> findByUserAndRecord(Long userId,Long recordId){
         return ratingRepository.findByUserIdAndRatedRecordId(userId,recordId);
     }
+
+    public boolean isLiked(Long recordId){
+        return hasCurrentUserRating(recordId,Like.class);
+    }
+
+    public boolean isDisliked(Long recordId){
+        return hasCurrentUserRating(recordId, Dislike.class);
+    }
+
+    private boolean hasCurrentUserRating(Long recordId, Class<? extends RecordRating> ratingClass){
+        return findByUserAndRecord(userService.receiveCurrentUserId(),recordId)
+                .map(value->value.getClass().equals(ratingClass))
+                .orElse(false);
+    }
+
+
 }
