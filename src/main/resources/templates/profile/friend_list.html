@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Friends list</title>
+</head>
+<body>
+<div th:each="currentId : ${usersId}">
+    <a th:href="@{/profiles/{id}/(id=${currentId})}" th:text="${'go to friend with id '+currentId}"></a>
+    <form method="post" th:action="@{/profiles/remove_friend/{id}(id=${currentId})}">
+        <input type="submit" value="remove friend">
+    </form>
+</div>
+<a th:href="@{/profiles/my_profile}">Return to your profile</a>
+</body>
+</html>
