@@ -90,10 +90,6 @@ public class UserService{
                 .map(Optional::get).toList();
     }
 
-    public Optional<User> findById(Long id){
-        return userRepository.findById(id);
-    }
-
     public UserDTO receiveCurrentUserDTO(){
         User user = receiveCurrentUser();
         return user!=null?userConverter.convertToDTO(user):null;
@@ -102,6 +98,32 @@ public class UserService{
     public User receiveCurrentUser(){
         Long id = receiveCurrentUserId();
         return findById(id).orElse(null);
+    }
+
+    public void addFriendToCurrentUser(Long id){
+        Optional<User> friend = findById(id);
+        friend.ifPresent(value->{
+            User currentUser = receiveCurrentUser();
+            currentUser.getFriends().add(value);
+            userRepository.save(currentUser);
+            value.getFriends().add(currentUser);
+            userRepository.save(currentUser);
+        });
+    }
+
+    public void removeCurrentUserFriend(Long id){
+        Optional<User> friend = findById(id);
+        friend.ifPresent(value->{
+            User currentUser = receiveCurrentUser();
+            currentUser.getFriends().remove(value);
+            userRepository.save(currentUser);
+            value.getFriends().remove(currentUser);
+            userRepository.save(value);
+        });
+    }
+
+    public Optional<User> findById(Long id){
+        return userRepository.findById(id);
     }
 
     public Long receiveCurrentUserId(){
@@ -113,6 +135,10 @@ public class UserService{
         return user.getChats().stream()
                 .filter(chat->chat.getUsers().stream().anyMatch(value->value.getId().equals(secondUserId)))
                 .findAny();
+    }
+
+    public boolean areFriendsWithCurrentUser(Long id){
+        return receiveCurrentUser().getFriends().stream().anyMatch(user->user.getId().equals(id));
     }
 
 }

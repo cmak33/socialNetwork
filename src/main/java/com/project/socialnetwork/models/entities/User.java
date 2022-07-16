@@ -38,6 +38,8 @@ public class User implements UserDetails {
     private List<Message> sentMessages;
     @ManyToMany(mappedBy = "users")
     private Set<Chat> chats;
+    @ManyToMany
+    private Set<User> friends;
 
 
     @Override
