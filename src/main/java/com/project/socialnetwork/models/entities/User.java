@@ -36,7 +36,7 @@ public class User implements UserDetails {
     private Set<RecordRating> ratings;
     @OneToMany(mappedBy = "sender")
     private List<Message> sentMessages;
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "users")
     private Set<Chat> chats;
 
 
