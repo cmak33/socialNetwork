@@ -17,11 +17,12 @@ public class Message {
     private Long id;
     private String text;
     @CreationTimestamp
+    @Column(updatable = false)
     private Date date;
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(updatable = false)
     private User sender;
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(updatable = false)
     private Chat chat;
 }
