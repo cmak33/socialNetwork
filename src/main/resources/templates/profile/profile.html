@@ -13,6 +13,12 @@
 <form th:if="${chatId==null}" method="post" th:action="@{/chat/create_with/{id}(id=${pageOwner.getId()})}">
     <input type="submit" value="Start chat">
 </form>
+<form th:if="${!areFriends}" method="post" th:action="@{/profiles/{id}/add_to_friends(id=${pageOwner.getId()})}">
+    <input type="submit" value="Add to friends">
+</form>
+<form th:if="${areFriends}" method="post" th:action="@{/profiles/remove_friend/{id}(id=${pageOwner.getId()})}">
+    <input type="submit" value="delete from friends">
+</form>
 <a th:if="${chatId!=null}" th:href="@{/chat/{id}/(id=${chatId})}">Go to chat</a>
 </body>
 </html>
