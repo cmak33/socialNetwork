@@ -7,7 +7,6 @@
 <body>
 <div th:each="currentId : ${chatsId}">
     <a th:href="@{/chat/{id}/(id=${currentId})}" th:text="${'go to chat with id '+currentId}"></a>
-    <p>rofl</p>
 </div>
 <a th:href="@{/profiles/my_profile}">Return to your profile</a>
 </body>
