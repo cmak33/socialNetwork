@@ -15,7 +15,7 @@
     <description>socialNetwork</description>
     <properties>
         <java.version>18</java.version>
-    </properties>
+    </properties>sw
     <dependencies>
         <dependency>
             <groupId>org.modelmapper</groupId>
@@ -23,13 +23,10 @@
             <version>3.1.0</version>
         </dependency>
         <dependency>
-<<<<<<< HEAD
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
         <dependency>
-=======
->>>>>>> friends
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
