@@ -2,6 +2,7 @@ package com.project.socialnetwork.services;
 
 
 import com.project.socialnetwork.models.dtos.UserDTO;
+import com.project.socialnetwork.models.entities.Chat;
 import com.project.socialnetwork.models.entities.Role;
 import com.project.socialnetwork.models.entities.User;
 import com.project.socialnetwork.repositories.RoleRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -81,6 +83,13 @@ public class UserService{
         return findById(id).map(userConverter::convertToDTO);
     }
 
+    public List<User> findUsers(List<Long> idList){
+        return idList.stream()
+                .map(this::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get).toList();
+    }
+
     public Optional<User> findById(Long id){
         return userRepository.findById(id);
     }
@@ -98,6 +107,12 @@ public class UserService{
     public Long receiveCurrentUserId(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ((User)principal).getId();
+    }
+
+    public Optional<Chat> findCommonChat(User user,Long secondUserId){
+        return user.getChats().stream()
+                .filter(chat->chat.getUsers().stream().anyMatch(value->value.getId().equals(secondUserId)))
+                .findAny();
     }
 
 }
