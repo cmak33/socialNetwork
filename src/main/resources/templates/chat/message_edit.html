@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="POST" th:action="@{/chat/{chatId}/message/{id}/edit/(chatId=${message.getChat().getId()},id=${message.getId()})}" th:object="${message}">
+    <input th:type="hidden" th:field="*{id}">
+    <label for="text">text</label>
+    <input id="text" th:type="text" th:field="*{text}">
+    <input type="submit" value="change">
+</form>
+<a th:href="@{/chat/{id}/(id=${message.getChat().getId()})}">Back to chat</a>
+</body>
+</html>

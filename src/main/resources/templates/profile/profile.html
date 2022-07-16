@@ -10,5 +10,9 @@
 <img th:src="${'/images/avatars/'+pageOwner.getAvatarName()}"  alt="no image"/>
 <a th:href="@{/profiles/my_profile}">go home</a>
 <a th:href="@{/profiles/{id}/records(id=${pageOwner.getId()})}">See records</a>
+<form th:if="${chatId==null}" method="post" th:action="@{/chat/create_with/{id}(id=${pageOwner.getId()})}">
+    <input type="submit" value="Start chat">
+</form>
+<a th:if="${chatId!=null}" th:href="@{/chat/{id}/(id=${chatId})}">Go to chat</a>
 </body>
 </html>

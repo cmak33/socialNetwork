@@ -1,6 +1,7 @@
 package com.project.socialnetwork.controllers.user;
 
 import com.project.socialnetwork.models.dtos.UserDTO;
+import com.project.socialnetwork.models.entities.Chat;
 import com.project.socialnetwork.models.entities.PostedRecord;
 import com.project.socialnetwork.models.entities.User;
 import com.project.socialnetwork.services.UserService;
@@ -31,9 +32,15 @@ public class ProfileController {
     public String profileById(@PathVariable Long id, Model model){
         Optional<UserDTO> pageOwner = userService.receiveDTOById(id);
         return pageOwner.map(owner->{
-            model.addAttribute("pageOwner",pageOwner.get());
+            model.addAttribute("pageOwner",owner);
             boolean isOwner = userService.isCurrentUserId(id);
-            return isOwner?"/profile/my_profile":"/profile/profile";
+            if(!isOwner){
+                Optional<Chat> chat= userService.findCommonChat(userService.receiveCurrentUser(),id);
+                model.addAttribute("chatId",chat.map(Chat::getId).orElse(null));
+                return "/profile/profile";
+            } else{
+                return "/profile/my_profile";
+            }
         }).orElse("pageNotFound/pageNotFoundView");
     }
 
@@ -61,6 +68,19 @@ public class ProfileController {
             model.addAttribute("isOwner",userService.isCurrentUserId(id));
             return "profile/records_list";
         }).orElse("pageNotFound/pageNotFoundView");
+    }
+
+    @GetMapping("/{id}/chats")
+    public String profileChats(@PathVariable Long id,Model model){
+        Optional<User> user = userService.findById(id);
+        return user
+                .filter(value-> userService.isCurrentUserId(value.getId()))
+                .map(value->{
+                    List<Long> chatsId = value.getChats().stream().map(Chat::getId).toList();
+                    model.addAttribute("chatsId",chatsId);
+                    return "profile/chat_list";
+                 })
+                .orElse("pageNotFound/pageNotFoundView");
     }
 
 }
