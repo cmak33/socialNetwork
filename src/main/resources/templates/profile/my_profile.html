@@ -24,6 +24,7 @@
 </form>
 <a th:href="@{/profiles/{id}/records(id=${pageOwner.getId()})}">See your records</a>
 <a th:href="@{/profiles/{id}/chats(id=${pageOwner.getId()})}">See your chats</a>
+<a th:href="@{/profiles/{id}/friends(id=${pageOwner.getId()})}">See your friends</a>
 <form method="post" th:action="@{/logout}">
     <input type="submit" value="logout">
 </form>

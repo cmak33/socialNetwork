@@ -1,5 +1,6 @@
 package com.project.socialnetwork.controllers.user;
 
+import com.project.socialnetwork.logic_classes.auxiliary_classes.AuxiliaryMethods;
 import com.project.socialnetwork.models.dtos.UserDTO;
 import com.project.socialnetwork.models.entities.Chat;
 import com.project.socialnetwork.models.entities.PostedRecord;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +38,10 @@ public class ProfileController {
             boolean isOwner = userService.isCurrentUserId(id);
             if(!isOwner){
                 Optional<Chat> chat= userService.findCommonChat(userService.receiveCurrentUser(),id);
-                model.addAttribute("chatId",chat.map(Chat::getId).orElse(null));
+                Long chatId = chat.map(Chat::getId).orElse(null);
+                boolean areFriends = userService.areFriendsWithCurrentUser(id);
+                model.addAttribute("chatId",chatId);
+                model.addAttribute("areFriends",areFriends);
                 return "/profile/profile";
             } else{
                 return "/profile/my_profile";
@@ -82,5 +87,30 @@ public class ProfileController {
                  })
                 .orElse("pageNotFound/pageNotFoundView");
     }
+
+    @PostMapping("/{id}/add_to_friends")
+    public String addToFriends(@PathVariable Long id){
+        userService.addFriendToCurrentUser(id);
+        return String.format("redirect:/profiles/%d/",id);
+    }
+
+    @GetMapping("/{id}/friends")
+    public String friendsList(Model model,@PathVariable Long id){
+        Optional<User> user = userService.findById(id);
+        return user
+                .map(value->{
+                    List<Long> usersId = value.getFriends().stream().map(User::getId).toList();
+                    model.addAttribute("usersId",usersId);
+                    return "profile/friend_list";
+                })
+                .orElse("pageNotFound/pageNotFoundView");
+    }
+
+    @PostMapping("/remove_friend/{id}")
+    public String removeFriend(@PathVariable Long id, HttpServletRequest servletRequest){
+        userService.removeCurrentUserFriend(id);
+        return AuxiliaryMethods.createRedirectionToPreviousPage(servletRequest);
+    }
+
 
 }

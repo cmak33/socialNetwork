@@ -29,7 +29,7 @@ public class ChatController {
         return String.format("redirect:/chat/%d/",chat.getId());
     }
 
-    @GetMapping("/{id}/")
+    @GetMapping("/{id}")
     public String showChat(Model model,@PathVariable Long id){
         Optional<Chat> chat = chatService.findChatById(id);
         return chat.filter(chatService::isCurrentUserInChatParticipants).map(value->{
@@ -40,14 +40,14 @@ public class ChatController {
         }).orElse("pageNotFound/pageNotFoundView");
     }
 
-    @PostMapping("/{id}/delete/")
+    @PostMapping("/{id}/delete")
     public String deleteChat(@PathVariable Long id){
         chatService.deleteChat(id);
         return "redirect:/profiles/my_profile/";
     }
 
 
-    @PostMapping("/{chatId}/create_message/")
+    @PostMapping("/{chatId}/create_message")
     public String createMessage(@PathVariable Long chatId,@ModelAttribute("newMessage") Message message,BindingResult result){
         if(!result.hasErrors()){
             messageService.createMessage(message,chatId);
@@ -55,7 +55,7 @@ public class ChatController {
         return String.format("redirect:/chat/%d/",chatId);
     }
 
-    @GetMapping("/message/{id}/edit/")
+    @GetMapping("/message/{id}/edit")
     public String editMessage(Model model,@PathVariable("id") Long id){
         Optional<Message> message = messageService.findMessageById(id);
         return message.map(value->{
@@ -64,7 +64,7 @@ public class ChatController {
         }).orElse("pageNotFound/pageNotFoundView");
     }
 
-    @PostMapping("/{chatId}/message/{id}/edit/")
+    @PostMapping("/{chatId}/message/{id}/edit")
     public String editMessagePost(@PathVariable("chatId") Long chatId,@ModelAttribute("message") @Valid Message message, BindingResult result){
         if(!result.hasErrors()){
             messageService.updateMessage(message);
@@ -74,7 +74,7 @@ public class ChatController {
         }
     }
 
-    @PostMapping("/{chatId}/message/{id}/delete/")
+    @PostMapping("/{chatId}/message/{id}/delete")
     public String deleteMessage(@PathVariable("chatId") Long chatId,@PathVariable("id") Long id){
         messageService.deleteMessage(id);
         return String.format("redirect:/chat/%d/",chatId);
