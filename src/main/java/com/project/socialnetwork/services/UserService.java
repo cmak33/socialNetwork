@@ -37,7 +37,6 @@ public class UserService{
     @Value("${defaultAvatarName}")
     private String defaultAvatarName;
 
-
     public void saveNewUser(User user){
         encodeUserPassword(user);
         addDefaultRoleToUser(user);
@@ -46,6 +45,7 @@ public class UserService{
         }
         userRepository.save(user);
     }
+
     private void encodeUserPassword(User user){
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -60,7 +60,6 @@ public class UserService{
         Optional<String> avatarName = avatarsOperations.saveAvatar(user.getId(),user.getAvatarName(),avatar);
         avatarName.ifPresent(user::setAvatarName);
     }
-
 
     public boolean isNewUsernameAppropriate(String username){
         return isUsernameUnique(username) || receiveCurrentUser().getUsername().equals(username);
@@ -96,8 +95,7 @@ public class UserService{
     }
 
     public User receiveCurrentUser(){
-        Long id = receiveCurrentUserId();
-        return findById(id).orElse(null);
+        return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public void addFriendToCurrentUser(Long id){
@@ -107,7 +105,7 @@ public class UserService{
             currentUser.getFriends().add(value);
             userRepository.save(currentUser);
             value.getFriends().add(currentUser);
-            userRepository.save(currentUser);
+            userRepository.save(value);
         });
     }
 
@@ -127,8 +125,7 @@ public class UserService{
     }
 
     public Long receiveCurrentUserId(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ((User)principal).getId();
+        return receiveCurrentUser().getId();
     }
 
     public Optional<Chat> findCommonChat(User user,Long secondUserId){
